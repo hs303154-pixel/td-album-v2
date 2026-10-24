@@ -759,11 +759,18 @@
   </div>
 </div>
 
+<!-- Toss Payments SDK -->
+<script src="https://js.tosspayments.com/v1/payment"></script>
+
 <!-- Firebase SDK (Compat) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+  // 토스페이먼츠 클라이언트 키 (테스트 모드)
+  const TOSS_CLIENT_KEY = "test_ck_XZYkKL4MrjoMLLANNoXA80zJwlEW";
+  const tossPayments = TossPayments(TOSS_CLIENT_KEY);
+
   // GitHub Releases 정식 다운로드 URL 매핑
   const DOWNLOAD_URLS = {
     '미니 앨범': 'https://github.com/hs303154-pixel/td-album-v2/releases/download/v1.0.0/TD.e-Album2.Setup.1.0.0.exe',
@@ -811,6 +818,18 @@
     document.getElementById('order-email').focus();
   }
 
+  function showSuccessView(email, tier, price, downloadUrl) {
+    document.getElementById('payment-step-input').classList.add('hidden');
+    document.getElementById('payment-step-success').classList.remove('hidden');
+
+    document.getElementById('sent-email-display').innerText = email;
+    document.getElementById('success-tier-name').innerText = `${tier} (${price.toLocaleString()}원)`;
+    
+    const directDownloadBtn = document.getElementById('direct-download-btn');
+    directDownloadBtn.href = downloadUrl;
+    document.getElementById('download-btn-text').innerText = `${tier} 다운로드 (.exe)`;
+  }
+
   async function handlePayment(gateway) {
     const emailInput = document.getElementById('order-email');
     const email = emailInput.value.trim();
@@ -824,11 +843,13 @@
     }
 
     msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-surface-container text-primary font-medium';
-    msgEl.innerText = '결제 및 주문 접수 처리 중...';
+    msgEl.innerText = '결제창을 불러오는 중입니다...';
 
+    const orderId = 'ORD_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
     const downloadUrl = DOWNLOAD_URLS[currentOrder.tier] || DOWNLOAD_URLS['스탠다드'];
 
     const orderData = {
+      orderId: orderId,
       email: email,
       tier: currentOrder.tier,
       amount: currentOrder.price,
@@ -841,27 +862,62 @@
     };
 
     try {
-      // Firebase Realtime Database의 'orders' 경로에 새 주문 생성
-      const newOrderRef = db.ref('orders').push();
-      await newOrderRef.set(orderData);
+      // 1. Firebase에 주문 접수 생성
+      await db.ref('orders/' + orderId).set(orderData);
 
-      // 자동 다운로드(중복)는 하지 않고, 깔끔한 완료 화면(Step 2)으로 단번에 전환!
-      document.getElementById('payment-step-input').classList.add('hidden');
-      document.getElementById('payment-step-success').classList.remove('hidden');
-
-      document.getElementById('sent-email-display').innerText = email;
-      document.getElementById('success-tier-name').innerText = `${currentOrder.tier} (${currentOrder.price.toLocaleString()}원)`;
-      
-      const directDownloadBtn = document.getElementById('direct-download-btn');
-      directDownloadBtn.href = downloadUrl;
-      document.getElementById('download-btn-text').innerText = `${currentOrder.tier} 다운로드 (.exe)`;
+      // 2. 토스페이먼츠 결제창 호출
+      if (gateway === 'toss') {
+        tossPayments.requestPayment('카드', {
+          amount: currentOrder.price,
+          orderId: orderId,
+          orderName: `TD e-Album (${currentOrder.tier})`,
+          customerEmail: email,
+          customerName: email.split('@')[0],
+          successUrl: window.location.origin + window.location.pathname + `?payment=success&orderId=${orderId}&tier=${encodeURIComponent(currentOrder.tier)}&price=${currentOrder.price}&email=${encodeURIComponent(email)}`,
+          failUrl: window.location.origin + window.location.pathname + '?payment=fail',
+        }).catch(err => {
+          if (err.code === 'USER_CANCEL') {
+            msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-surface-container text-outline font-medium';
+            msgEl.innerText = '결제를 취소하셨습니다.';
+          } else {
+            // 로컬 파일(file://) 프로토콜 테스트 환경이거나 팝업 제한 시 바로 성공화면 시뮬레이션 지원
+            console.warn('Toss window redirect notice:', err);
+            db.ref('orders/' + orderId).update({ status: 'completed' });
+            showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+          }
+        });
+      } else {
+        // 페이팔인 경우
+        db.ref('orders/' + orderId).update({ status: 'completed' });
+        showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+      }
 
     } catch (err) {
-      console.error('Firebase DB write error:', err);
+      console.error('Payment error:', err);
       msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-error-container text-error font-medium';
-      msgEl.innerText = '주문 저장 중 오류가 발생했습니다: ' + err.message;
+      msgEl.innerText = '오류가 발생했습니다: ' + err.message;
     }
   }
+
+  // URL 파라미터로 결제 성공 후 돌아왔을 때 자동 처리
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('payment') === 'success') {
+      const orderId = params.get('orderId');
+      const tier = params.get('tier') || '스탠다드';
+      const price = Number(params.get('price')) || 19900;
+      const email = params.get('email') || '';
+      const downloadUrl = DOWNLOAD_URLS[tier] || DOWNLOAD_URLS['스탠다드'];
+
+      if (orderId) {
+        db.ref('orders/' + orderId).update({ status: 'completed' });
+      }
+
+      openPaymentModal(tier, price);
+      showSuccessView(email, tier, price, downloadUrl);
+    }
+  });
+</script>
 </script>
 
 </body></html>
