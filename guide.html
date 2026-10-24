@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TD e-Album 사용가이드</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Pretendard', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+
+  <div class="max-w-4xl mx-auto space-y-10">
+
+    <!-- 헤더 영역 -->
+    <header class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold border border-blue-100">
+        <span class="material-symbols-outlined text-base">menu_book</span>
+        공식 매뉴얼
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">TD e-Album 사용가이드</h1>
+      <p class="text-slate-500 text-base max-w-xl mx-auto">
+        앨범 제작부터 3D 감상 및 다양한 파일 내보내기까지, 핵심 기능을 한눈에 확인하세요.
+      </p>
+    </header>
+
+    <!-- 기능 카드 그리드 -->
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- 1. 앨범 에디터 -->
+      <section class="bg-white rounded-2xl p-7 shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 pb-5 border-b border-slate-100">
+          <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm shadow-blue-200">
+            <span class="material-symbols-outlined text-2xl">edit_note</span>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">앨범 에디터</h2>
+            <p class="text-xs text-slate-400">나만의 디지털 앨범 제작 및 편집</p>
+          </div>
+        </div>
+
+        <ul class="mt-6 space-y-3">
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">add_photo_alternate</span>
+            <span class="font-medium">사진 편집</span>
+            <span class="text-xs text-slate-400 ml-auto">드래그 앤 드롭 및 비율 조정</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">title</span>
+            <span class="font-medium">텍스트 편집</span>
+            <span class="text-xs text-slate-400 ml-auto">추억 메모 및 타이틀 작성</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">format_list_bulleted</span>
+            <span class="font-medium">목차 작성</span>
+            <span class="text-xs text-slate-400 ml-auto">페이지 순서 및 챕터 구성</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">bookmark</span>
+            <span class="font-medium">책갈피 삽입</span>
+            <span class="text-xs text-slate-400 ml-auto">원하는 페이지 북마크 표시</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">save</span>
+            <span class="font-medium">데이터 저장</span>
+            <span class="text-xs text-slate-400 ml-auto">내 PC에 안전하게 파일 저장</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-blue-500 text-lg">folder_open</span>
+            <span class="font-medium">데이터 불러오기</span>
+            <span class="text-xs text-slate-400 ml-auto">작업하던 앨범 언제든 이어 편집</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. 앨범 뷰어 -->
+      <section class="bg-white rounded-2xl p-7 shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 pb-5 border-b border-slate-100">
+          <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm shadow-emerald-200">
+            <span class="material-symbols-outlined text-2xl">auto_stories</span>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">앨범 뷰어</h2>
+            <p class="text-xs text-slate-400">3D 감상 및 다양한 포맷 내보내기</p>
+          </div>
+        </div>
+
+        <ul class="mt-6 space-y-3">
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-emerald-500 text-lg">visibility</span>
+            <span class="font-medium">사진 보기</span>
+            <span class="text-xs text-slate-400 ml-auto">실감 나는 3D 양면 책장 넘김</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-emerald-500 text-lg">movie</span>
+            <span class="font-medium">동영상으로 내보내기</span>
+            <span class="text-xs text-slate-400 ml-auto">앨범 넘김을 영상 파일(MP4)로 변환</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-emerald-500 text-lg">picture_as_pdf</span>
+            <span class="font-medium">PDF 내보내기</span>
+            <span class="text-xs text-slate-400 ml-auto">실물 인쇄 및 영구 소장용 문서</span>
+          </li>
+          <li class="flex items-center gap-3 text-sm text-slate-700">
+            <span class="material-symbols-outlined text-emerald-500 text-lg">photo_size_select_actual</span>
+            <span class="font-medium">JPG 내보내기</span>
+            <span class="text-xs text-slate-400 ml-auto">페이지별 고화질 이미지 추출</span>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+
+    <!-- 3. 앨범 에디터 상세 가이드 섹션 -->
+    <section class="mt-16 pt-10 border-t border-slate-200/80">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
+          <span class="material-symbols-outlined text-2xl">edit_note</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">앨범 에디터 상세 가이드</h2>
+          <p class="text-sm text-slate-500">사진 편집부터 데이터 저장까지 차근차근 따라 해보세요.</p>
+        </div>
+      </div>
+
+      <!-- 에디터 상세 이미지 & 지시선 설명 영역 -->
+      <div class="mt-8 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+        
+        <!-- 반응형 이미지 래퍼 (지시선/핀 오버레이) -->
+        <div class="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-700 bg-slate-900">
+          <img src="public/desh_001.png" alt="앨범 에디터 상세 화면" class="w-full h-auto block" />
+
+          <!-- 지시선 1: 책갈피 삽입 (우측 상단 책갈피 버튼) -->
+          <div class="absolute" style="top: 9.5%; left: 59%;">
+            <div class="relative flex items-center">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold shadow-md animate-pulse">
+                1
+              </span>
+              <!-- 지시 텍스트 태그 -->
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-red-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                책갈피 삽입
+              </div>
+            </div>
+          </div>
+
+          <!-- 지시선 2: 사진 추가/편집 (중앙 영역) -->
+          <div class="absolute" style="top: 48%; left: 49%;">
+            <div class="relative flex items-center -translate-x-1/2">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-blue-500 text-white text-xs font-bold shadow-md animate-pulse">
+                2
+              </span>
+              <!-- 지시 텍스트 태그 -->
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-blue-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                사진 추가 및 편집 (드래그 앤 드롭)
+              </div>
+            </div>
+          </div>
+
+          <!-- 지시선 3: 텍스트 편집 (하단 입력창) -->
+          <div class="absolute" style="top: 73%; left: 42%;">
+            <div class="relative flex items-center">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-amber-500 text-white text-xs font-bold shadow-md animate-pulse">
+                3
+              </span>
+              <!-- 지시 텍스트 태그 -->
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-amber-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                날짜 & 추억 텍스트 편집
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 이미지 하단 세부 지시 설명 리스트 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-6 border-t border-slate-100">
+          
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-red-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">1</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                책갈피 삽입
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                우측 상단 <span class="font-semibold text-slate-700">[책갈피]</span> 버튼을 누르면 이 페이지가 북마크되어 뷰어에서 빠르게 찾아볼 수 있습니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">2</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                사진 편집 (추가)
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                컴퓨터 폴더에서 사진을 끌어다 <span class="font-semibold text-slate-700">[사진 추가하기]</span> 영역에 툭 놓으면 자동으로 페이지에 쏙 들어갑니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">3</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                텍스트 편집 (메모)
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                사진 하단 입력창에 <span class="font-semibold text-slate-700">날짜와 소중한 감성 메모</span>를 타이핑한 뒤 저장 버튼을 누르면 완성됩니다.
+              </p>
+            </div>
+          </div>
+
+      </div>
+
+      <!-- 에디터 상단 버튼 메뉴 가이드 (desh_002) -->
+      <div class="mt-8 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+        
+        <div class="mb-5">
+          <h3 class="text-lg font-bold text-slate-900">상단 관리 메뉴</h3>
+          <p class="text-xs text-slate-500">앨범 테마 디자인 변경 및 안전한 파일 백업/불러오기 기능입니다.</p>
+        </div>
+
+        <!-- 반응형 이미지 래퍼 (지시선/핀 오버레이) -->
+        <div class="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-700 bg-slate-900">
+          <img src="public/desh_002.png" alt="앨범 에디터 상단 버튼 메뉴 화면" class="w-full h-auto block" />
+
+          <!-- 지시선 1: 테마 설정 (노란 버튼) -->
+          <div class="absolute" style="top: 24%; left: 45%;">
+            <div class="relative flex items-center -translate-x-1/2">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-amber-500 text-white text-xs font-bold shadow-md animate-pulse">
+                1
+              </span>
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-amber-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                테마 설정
+              </div>
+            </div>
+          </div>
+
+          <!-- 지시선 2: 데이터 내보내기 (초록 버튼) -->
+          <div class="absolute" style="top: 24%; left: 62.5%;">
+            <div class="relative flex items-center -translate-x-1/2">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shadow-md animate-pulse">
+                2
+              </span>
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-emerald-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                데이터 내보내기 (저장)
+              </div>
+            </div>
+          </div>
+
+          <!-- 지시선 3: 데이터 불러오기 (파란 버튼) -->
+          <div class="absolute" style="top: 24%; left: 83%;">
+            <div class="relative flex items-center -translate-x-1/2">
+              <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-sky-500 text-white text-xs font-bold shadow-md animate-pulse">
+                3
+              </span>
+              <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-sky-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                데이터 불러오기
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 이미지 하단 세부 지시 설명 리스트 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-6 border-t border-slate-100">
+          
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">1</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                테마 설정
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                <span class="font-semibold text-slate-700">앨범표지, 속지 색상 수정</span>을 통해 원하는 분위기로 자유롭게 변경할 수 있습니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">2</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                데이터 내보내기 (저장)
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                현재 작업한 사진과 텍스트를 저장합니다. <span class="font-bold text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded">편집 작업 후에는 반드시 저장</span>해야 데이터가 유지됩니다.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-sky-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">3</span>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                데이터 불러오기
+              </h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                이전에 저장해 둔 앨범 백업 파일을 선택하여 <span class="font-semibold text-slate-700">언제든 다시 불러와 이어 작업</span>하거나 수정할 수 있습니다.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. 앨범 뷰어 상세 가이드 섹션 -->
+    <section class="mt-20 pt-10 border-t border-slate-200/80">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-sm">
+          <span class="material-symbols-outlined text-2xl">auto_stories</span>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">앨범 뷰어 상세 가이드</h2>
+          <p class="text-sm text-slate-500">3D 입체 감상부터 영상, PDF, JPG 파일 내보내기까지 확인해 보세요.</p>
+        </div>
+      </div>
+
+      <!-- 뷰어 상세 내용 및 이미지가 들어갈 영역 -->
+      <div id="viewer-details" class="space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+          
+          <div class="mb-5">
+            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              아날로그 앨범 감상
+            </h3>
+            <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+              실제 <span class="font-bold text-slate-900">아날로그 앨범의 감성 그대로, 마우스로 책장을 넘기듯</span> 실감 나게 감상할 수 있습니다.
+            </p>
+          </div>
+
+          <!-- 반응형 이미지 래퍼 -->
+          <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-700 bg-slate-900">
+            <img src="public/view_001.png" alt="앨범 뷰어 3D 책장 넘김 화면" class="w-full h-auto block" />
+          </div>
+
+          <!-- 하단 감상 포인트 안내 카드 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t border-slate-100">
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="material-symbols-outlined text-emerald-600 text-xl flex-shrink-0 mt-0.5">menu_book</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">양면 펼침 & 3D 입체감</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  좌우 페이지가 한눈에 펼쳐져 옛날 앨범을 무릎 위에 올려두고 보던 그 시절의 깊은 감성을 그대로 재현합니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="material-symbols-outlined text-emerald-600 text-xl flex-shrink-0 mt-0.5">touch_app</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">자연스러운 책장 넘김</h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  마우스로 페이지 모서리를 잡고 넘기거나 이전/다음 버튼을 눌러 부드러운 종이 넘김 효과를 즐기세요.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        <!-- 상단 기능 및 책갈피 가이드 (view_002.png) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+          
+          <div class="mb-5">
+            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              내보내기 메뉴 & 책갈피 기능
+            </h3>
+            <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+              작업한 앨범을 다양한 파일로 내보내거나, 원하는 페이지로 바로 이동할 수 있는 기능입니다.
+            </p>
+          </div>
+
+          <!-- 반응형 이미지 래퍼 (지시선/핀 오버레이) -->
+          <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-700 bg-slate-900">
+            <img src="public/view_002.png" alt="앨범 뷰어 상단 내보내기 버튼 및 책갈피" class="w-full h-auto block" />
+
+            <!-- 지시선 1: 동영상 내보내기 -->
+            <div class="absolute" style="top: 13%; left: 48.5%;">
+              <div class="relative flex items-center -translate-x-1/2">
+                <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-500 text-white text-xs font-bold shadow-md animate-pulse">
+                  1
+                </span>
+                <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-rose-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                  동영상 내보내기
+                </div>
+              </div>
+            </div>
+
+            <!-- 지시선 2: JPG 전체 저장 -->
+            <div class="absolute" style="top: 13%; left: 67.5%;">
+              <div class="relative flex items-center -translate-x-1/2">
+                <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-blue-500 text-white text-xs font-bold shadow-md animate-pulse">
+                  2
+                </span>
+                <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-blue-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                  JPG 전체 저장
+                </div>
+              </div>
+            </div>
+
+            <!-- 지시선 3: PDF 전체 저장 -->
+            <div class="absolute" style="top: 13%; left: 85.5%;">
+              <div class="relative flex items-center -translate-x-1/2">
+                <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-amber-500 text-white text-xs font-bold shadow-md animate-pulse">
+                  3
+                </span>
+                <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-amber-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                  PDF 전체 저장
+                </div>
+              </div>
+            </div>
+
+            <!-- 지시선 4: 책갈피 기능 -->
+            <div class="absolute" style="top: 50%; left: 62%;">
+              <div class="relative flex items-center -translate-y-1/2">
+                <span class="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shadow-md animate-pulse">
+                  4
+                </span>
+                <div class="hidden sm:flex items-center ml-2 px-2.5 py-1 bg-emerald-600/95 backdrop-blur text-white text-xs font-semibold rounded-lg shadow-md whitespace-nowrap">
+                  책갈피 (바로가기)
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 하단 4분할 세부 지시 설명 리스트 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100">
+            
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-rose-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">1</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  동영상 내보내기
+                </h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  넘어가는 책장 모션을 고화질 <span class="font-semibold text-slate-700">MP4 영상</span>으로 렌더링하여 모바일이나 SNS에 바로 공유할 수 있습니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">2</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  JPG 전체 저장
+                </h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  앨범의 모든 페이지를 <span class="font-semibold text-slate-700">고해상도 JPG 이미지</span>로 일괄 추출하여 개별 사진 보관 및 인화용으로 활용합니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">3</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  PDF 전체 저장
+                </h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  전체 앨범을 깔끔한 단일 <span class="font-semibold text-slate-700">PDF 전자책 문서</span>로 생성하여 영구 보관하거나 실물 포토북 인쇄 시 전달합니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shadow-sm">4</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  책갈피 기능
+                </h4>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                  페이지 옆에 돌출된 <span class="font-semibold text-slate-700">책갈피 탭을 클릭</span>하면 기억하고 싶은 특별한 기념일 페이지로 즉시 점프합니다.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
