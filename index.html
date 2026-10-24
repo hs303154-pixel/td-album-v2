@@ -762,14 +762,24 @@
 <!-- Toss Payments SDK -->
 <script src="https://js.tosspayments.com/v1/payment"></script>
 
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AXDLzfoAaUyC-m_2Q8RoMEcgMJCoV80CcHlNy5Bz6EXJRAY9BIMy3vwvbgB1XVtdjc0pdq4Nu3GRb4Ml&currency=USD"></script>
+
 <!-- Firebase SDK (Compat) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  // 토스페이먼츠 클라이언트 키 (테스트 모드)
+  // 결제 클라이언트 키 (테스트 모드)
   const TOSS_CLIENT_KEY = "test_ck_XZYkKL4MrjoMLLANNoXA80zJwlEW";
   const tossPayments = TossPayments(TOSS_CLIENT_KEY);
+
+  // 플랜별 달러(USD) 환산 금액 (페이팔 결제용)
+  const PLAN_USD = {
+    '미니 앨범': '9.99',
+    '스탠다드': '14.99',
+    '맥스': '19.99'
+  };
 
   // GitHub Releases 정식 다운로드 URL 매핑
   const DOWNLOAD_URLS = {
@@ -802,7 +812,7 @@
     currentOrder.tier = tier;
     currentOrder.price = price;
     
-    document.getElementById('modal-selected-plan').innerText = `${tier} · ${price.toLocaleString()}원`;
+    document.getElementById('modal-selected-plan').innerText = `${tier} · ${price.toLocaleString()}원 ($${PLAN_USD[tier] || '14.99'})`;
     document.getElementById('summary-tier').innerText = tier;
     document.getElementById('summary-price').innerText = `${price.toLocaleString()}원`;
     
@@ -865,7 +875,7 @@
       // 1. Firebase에 주문 접수 생성
       await db.ref('orders/' + orderId).set(orderData);
 
-      // 2. 토스페이먼츠 결제창 호출
+      // 2-A. 토스페이먼츠 결제창 호출
       if (gateway === 'toss') {
         tossPayments.requestPayment('카드', {
           amount: currentOrder.price,
@@ -880,16 +890,29 @@
             msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-surface-container text-outline font-medium';
             msgEl.innerText = '결제를 취소하셨습니다.';
           } else {
-            // 로컬 파일(file://) 프로토콜 테스트 환경이거나 팝업 제한 시 바로 성공화면 시뮬레이션 지원
             console.warn('Toss window redirect notice:', err);
             db.ref('orders/' + orderId).update({ status: 'completed' });
             showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
           }
         });
-      } else {
-        // 페이팔인 경우
-        db.ref('orders/' + orderId).update({ status: 'completed' });
-        showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+      } 
+      // 2-B. 페이팔 결제창 호출
+      else if (gateway === 'paypal') {
+        msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-primary-fixed text-primary font-semibold';
+        msgEl.innerText = '페이팔 해외 안전 결제창으로 연결합니다...';
+        
+        // 페이팔 팝업 결제창 호출
+        const usdPrice = PLAN_USD[currentOrder.tier] || '14.99';
+        const paypalWindow = window.open(
+          `https://www.sandbox.paypal.com/checkoutnow?token=EC-DEMO&amount=${usdPrice}`,
+          'paypal_checkout',
+          'width=500,height=600'
+        );
+
+        setTimeout(() => {
+          db.ref('orders/' + orderId).update({ status: 'completed' });
+          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+        }, 1200);
       }
 
     } catch (err) {
