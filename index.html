@@ -710,11 +710,9 @@
       <div class="space-y-2.5 pt-1">
         <label class="font-label-sm text-label-sm text-on-surface-variant block">결제 수단 선택</label>
         <button onclick="handlePayment('toss')" id="btn-toss" class="w-full py-3.5 rounded-xl bg-[#3182f6] text-white font-label-lg text-label-lg font-semibold hover:bg-[#1b64da] transition-colors shadow-sm flex items-center justify-center gap-2 active:scale-98">
-          <span>토스페이먼츠 (카드 / 간편결제)</span>
+          <span>토스페이먼츠 (국내 카드 / 간편결제)</span>
         </button>
-        <button onclick="handlePayment('paypal')" id="btn-paypal" class="w-full py-3.5 rounded-xl bg-[#003087] text-white font-label-lg text-label-lg font-semibold hover:bg-[#001c53] transition-colors shadow-sm flex items-center justify-center gap-2 active:scale-98">
-          <span>페이팔 (PayPal / Overseas)</span>
-        </button>
+        <div id="paypal-button-container" class="w-full mt-2"></div>
       </div>
 
       <div id="payment-status-msg" class="hidden text-center text-xs py-2 rounded-lg font-medium"></div>
@@ -808,6 +806,77 @@
     price: 19900
   };
 
+  function renderPayPalButton() {
+    const container = document.getElementById('paypal-button-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (window.paypal && window.paypal.Buttons) {
+      window.paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'gold',
+          shape: 'rect',
+          label: 'paypal',
+          height: 48
+        },
+        createOrder: function(data, actions) {
+          const emailInput = document.getElementById('order-email');
+          const email = emailInput.value.trim();
+          const msgEl = document.getElementById('payment-status-msg');
+
+          if (!email || !email.includes('@') || !email.includes('.')) {
+            msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-error-container text-error font-medium';
+            msgEl.innerText = '이메일 주소를 먼저 올바르게 입력해 주세요.';
+            emailInput.focus();
+            return actions.reject();
+          }
+
+          const usdPrice = PLAN_USD[currentOrder.tier] || '14.99';
+          return actions.order.create({
+            purchase_units: [{
+              description: `TD e-Album (${currentOrder.tier})`,
+              amount: {
+                currency_code: 'USD',
+                value: usdPrice
+              }
+            }]
+          });
+        },
+        onApprove: async function(data, actions) {
+          const details = await actions.order.capture();
+          const email = document.getElementById('order-email').value.trim();
+          const orderId = 'ORD_PP_' + (data.orderID || Date.now());
+          const downloadUrl = DOWNLOAD_URLS[currentOrder.tier] || DOWNLOAD_URLS['스탠다드'];
+
+          // 파이어베이스에 성공 내역 저장
+          await db.ref('orders/' + orderId).set({
+            orderId: orderId,
+            email: email,
+            tier: currentOrder.tier,
+            amount: currentOrder.price,
+            amountUSD: PLAN_USD[currentOrder.tier],
+            gateway: 'paypal',
+            downloadUrl: downloadUrl,
+            status: 'completed',
+            paypalDetails: details,
+            createdAt: new Date().toISOString(),
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+          });
+
+          // 결제 완료 화면으로 전환
+          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+        },
+        onError: function(err) {
+          console.error('PayPal Buttons error:', err);
+          const msgEl = document.getElementById('payment-status-msg');
+          msgEl.className = 'block text-center text-xs py-2 rounded-lg bg-error-container text-error font-medium';
+          msgEl.innerText = '페이팔 결제 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+        }
+      }).render('#paypal-button-container');
+    }
+  }
+
   function openPaymentModal(tier, price) {
     currentOrder.tier = tier;
     currentOrder.price = price;
@@ -826,6 +895,9 @@
     
     document.getElementById('payment-modal').classList.remove('hidden');
     document.getElementById('order-email').focus();
+
+    // 페이팔 공식 버튼 렌더링
+    renderPayPalButton();
   }
 
   function showSuccessView(email, tier, price, downloadUrl) {
