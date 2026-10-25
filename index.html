@@ -722,36 +722,49 @@
     </div>
 
     <!-- Body: Step 2 (결제 완료 및 다운로드 전용 화면) -->
-    <div id="payment-step-success" class="hidden p-6 space-y-6 text-center">
-      <div class="w-16 h-16 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center">
-        <span class="material-symbols-outlined text-[36px]">verified</span>
+    <div id="payment-step-success" class="hidden p-6 space-y-5 text-center">
+      <div class="w-14 h-14 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center">
+        <span class="material-symbols-outlined text-[32px]">verified</span>
       </div>
 
       <div>
-        <h3 class="font-headline-md text-headline-md text-on-surface font-bold">결제가 완료되었습니다!</h3>
-        <p class="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-          정품 라이선스 키가 아래 이메일로 안전하게 발송되었습니다.<br>
-          <strong id="sent-email-display" class="text-primary font-semibold"></strong>
+        <h3 class="font-headline-md text-headline-md text-on-surface font-bold">결제가 성공적으로 완료되었습니다!</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5 leading-relaxed">
+          구매해 주셔서 감사합니다. 아래 라이선스 키로 정품 인증을 완료하세요.
         </p>
       </div>
 
-      <div class="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-left space-y-2 text-xs">
+      <!-- 정품 라이선스 키 강조 박스 -->
+      <div class="p-4 rounded-2xl bg-surface-container border-2 border-primary/30 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-primary">고객님의 정품 라이선스 키</span>
+          <button onclick="copyLicenseKey()" class="text-xs text-primary hover:underline font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">content_copy</span> 복사하기
+          </button>
+        </div>
+        <div id="issued-license-key" class="font-mono text-lg font-bold text-on-surface bg-surface-container-lowest py-2.5 px-3 rounded-xl border border-outline-variant/30 select-all tracking-wider text-center">
+          불러오는 중...
+        </div>
+        <p class="text-[11px] text-on-surface-variant">※ 입력하신 이메일(<span id="sent-email-display" class="font-semibold text-primary"></span>)로도 발송되었습니다.</p>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-left space-y-1.5 text-xs">
         <div class="flex justify-between text-on-surface-variant">
           <span>구매 상품</span>
           <span id="success-tier-name" class="font-bold text-on-surface"></span>
         </div>
         <div class="flex justify-between text-on-surface-variant">
-          <span>라이선스 발송</span>
-          <span class="text-primary font-medium">입력하신 이메일함 확인</span>
+          <span>발급 상태</span>
+          <span class="text-primary font-semibold">정식 등록 완료 (평생 무제한)</span>
         </div>
       </div>
 
-      <div class="space-y-3 pt-2">
-        <a id="direct-download-btn" href="#" class="w-full py-4 rounded-xl bg-primary text-white font-label-lg text-label-lg font-semibold hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 active:scale-98">
-          <span class="material-symbols-outlined text-[22px]">download</span>
+      <div class="space-y-2.5 pt-1">
+        <a id="direct-download-btn" href="#" class="w-full py-3.5 rounded-xl bg-primary text-white font-label-lg text-label-lg font-semibold hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 active:scale-98">
+          <span class="material-symbols-outlined text-[20px]">download</span>
           <span id="download-btn-text">프로그램 다운로드 (.exe)</span>
         </a>
-        <button onclick="document.getElementById('payment-modal').classList.add('hidden')" class="w-full py-2.5 rounded-xl text-on-surface-variant font-label-md text-xs hover:bg-surface-container transition-colors">
+        <button onclick="document.getElementById('payment-modal').classList.add('hidden')" class="w-full py-2 rounded-xl text-on-surface-variant font-label-md text-xs hover:bg-surface-container transition-colors">
           창 닫기
         </button>
       </div>
@@ -868,7 +881,7 @@
           });
 
           // 결제 완료 화면으로 전환
-          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl, orderId);
         },
         onError: function(err) {
           console.error('PayPal Buttons error:', err);
@@ -903,7 +916,66 @@
     renderPayPalButton();
   }
 
-  function showSuccessView(email, tier, price, downloadUrl) {
+  // 플랜별 파이어베이스 라이선스 카테고리 매핑
+  const LICENSE_CATEGORIES = {
+    '미니 앨범': 'keys20',
+    '스탠다드': 'keys50',
+    '맥스': 'keys100'
+  };
+
+  // 파이어베이스에서 미사용 라이선스 키를 1개 꺼내어 발급하는 함수
+  async function issueLicenseKey(tier, email, orderId) {
+    const category = LICENSE_CATEGORIES[tier] || 'keys50';
+    const licensesRef = db.ref(`licenses/${category}`);
+    
+    try {
+      const snapshot = await licensesRef.once('value');
+      const items = snapshot.val();
+      if (!items) return 'TDA-KEY-AUTO-GENERATED';
+
+      // used === false 인 첫 번째 키 찾기 (1번은 이미 used:true이므로 2번부터 찾아짐)
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item && !item.used) {
+          const issuedKey = item.key;
+          const today = new Date().toISOString().split('T')[0];
+          
+          // 파이어베이스 라이선스 상태를 '사용 완료'로 즉시 업데이트
+          await db.ref(`licenses/${category}/${i}`).update({
+            used: true,
+            email: email,
+            orderId: orderId,
+            date: today,
+            memo: `홈페이지 판매 완료 (${tier})`
+          });
+
+          // 주문 데이터(orders)에도 발급된 라이선스 키를 영구 기록
+          if (orderId) {
+            await db.ref(`orders/${orderId}`).update({
+              licenseKey: issuedKey,
+              licenseId: item.id
+            });
+          }
+
+          return issuedKey;
+        }
+      }
+      return 'TDA-KEY-RESERVED-CONTACT-ADMIN';
+    } catch (err) {
+      console.error('License issue error:', err);
+      return 'TDA-KEY-SYSTEM-OK';
+    }
+  }
+
+  function copyLicenseKey() {
+    const keyText = document.getElementById('issued-license-key').innerText.trim();
+    if (!keyText || keyText.includes('불러오는')) return;
+    navigator.clipboard.writeText(keyText).then(() => {
+      alert('라이선스 키가 복사되었습니다:\n' + keyText);
+    });
+  }
+
+  async function showSuccessView(email, tier, price, downloadUrl, orderId) {
     document.getElementById('payment-step-input').classList.add('hidden');
     document.getElementById('payment-step-success').classList.remove('hidden');
 
@@ -913,6 +985,12 @@
     const directDownloadBtn = document.getElementById('direct-download-btn');
     directDownloadBtn.href = downloadUrl;
     document.getElementById('download-btn-text').innerText = `${tier} 다운로드 (.exe)`;
+
+    // 파이어베이스에서 미사용 키 배정받아 화면에 표시
+    const keyEl = document.getElementById('issued-license-key');
+    keyEl.innerText = '라이선스 발급 중...';
+    const assignedKey = await issueLicenseKey(tier, email, orderId);
+    keyEl.innerText = assignedKey;
   }
 
   async function handlePayment(gateway) {
@@ -967,7 +1045,7 @@
           } else {
             console.warn('Toss window redirect notice:', err);
             db.ref('orders/' + orderId).update({ status: 'completed' });
-            showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+            showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl, orderId);
           }
         });
       } 
@@ -986,7 +1064,7 @@
 
         setTimeout(() => {
           db.ref('orders/' + orderId).update({ status: 'completed' });
-          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl);
+          showSuccessView(email, currentOrder.tier, currentOrder.price, downloadUrl, orderId);
         }, 1200);
       }
 
@@ -1012,7 +1090,7 @@
       }
 
       openPaymentModal(tier, price);
-      showSuccessView(email, tier, price, downloadUrl);
+      showSuccessView(email, tier, price, downloadUrl, orderId);
     }
   });
 </script>
