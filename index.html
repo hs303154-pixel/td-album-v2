@@ -783,7 +783,16 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
+  // EmailJS 초기화
+  const EMAILJS_PUBLIC_KEY = "lVjl1mVw_kh2FZUk0";
+  const EMAILJS_SERVICE_ID = "service_3c47jo3";
+  const EMAILJS_TEMPLATE_ID = "b9n3pds";
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
   // 결제 클라이언트 키 (테스트 모드)
   const TOSS_CLIENT_KEY = "test_ck_XZYkKL4MrjoMLLANNoXA80zJwlEW";
   const tossPayments = TossPayments(TOSS_CLIENT_KEY);
@@ -991,6 +1000,21 @@
     keyEl.innerText = '라이선스 발급 중...';
     const assignedKey = await issueLicenseKey(tier, email, orderId);
     keyEl.innerText = assignedKey;
+
+    // 이메일로 정품 라이선스 키 자동 발송 (EmailJS)
+    if (email && email.includes('@')) {
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        email: email,
+        tier_name: tier,
+        license_key: assignedKey,
+        order_id: orderId || ('ORD_' + Date.now()),
+        download_url: downloadUrl
+      }).then(() => {
+        console.log('Email sent successfully to', email);
+      }).catch(err => {
+        console.warn('EmailJS sending notice:', err);
+      });
+    }
   }
 
   async function handlePayment(gateway) {
